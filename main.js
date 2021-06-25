@@ -8,13 +8,23 @@ class Block {
         this.timestamp = timestamp;
         this.data = data;
         this.previousHash = previousHash;
+        this.nonce = 0;
         
         // calling a function to get a unique hash code
         this.hash = this.calculateHash();
     }
 
     calculateHash() {
-        return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data)).toString();
+        return SHA256(this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce).toString();
+    }
+
+    mineBlock(difficulty) {
+        while (this.hash.substring(0, difficulty) !== Array(difficulty + 1).join("0")) {
+            this.nonce++;
+            this.hash = this.calculateHash();
+        }
+
+        console.log("Block Mined To Hash", this.hash);
     }
 }
 
@@ -23,6 +33,7 @@ class BlockChain {
     constructor() {
         // Making sure of the presence of the genesis block
         this.chain = [this.createGenesisBlock()];
+        this.difficulty = 5;
     }
 
     createGenesisBlock() {
@@ -35,15 +46,22 @@ class BlockChain {
 
     addBlock(newBlock) {
         newBlock.previousHash = this.getLatestBlock().hash;
-        newBlock.hash = newBlock.calculateHash();
+        newBlock.mineBlock(this.difficulty);
         this.chain.push(newBlock);
+    }
+
+    verifyChain() {
+        for (let x = 1; x < this.chain.length; x++) {
+            let currentBlock = this.chain[x];
+            let previousBlock = this.chain[x - 1];
+
+            if (currentBlock.hash !== currentBlock.calculateHash()) return false;
+            if (currentBlock.previousHash !== previousBlock.hash) return false;
+        }
+
+        return true;
     }
 }
 
 // Local Instance 👇
-let tempChain = new BlockChain();
-
-tempChain.addBlock(new Block(1, "25/06/21", { coins: 4 }));
-tempChain.addBlock(new Block(2, "29/06/21", { coins: 12 }));
-
-console.log(JSON.stringify(tempChain, null, 4));
+let blockscript = new BlockChain();
