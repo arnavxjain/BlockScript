@@ -1,0 +1,22 @@
+{
+  "name": "blockscript",
+  "version": "1.0.0",
+  "description": "> This App Is Still Under Development | More Information Will Be Dropped Soon",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnavjainn06/BlockScript.git"
+  },
+  "author": "Arnav Jain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arnavjainn06/BlockScript/issues"
+  },
+  "homepage": "https://github.com/arnavjainn06/BlockScript#readme",
+  "dependencies": {
+    "crypto-js": "^4.0.0"
+  }
+}
